@@ -293,10 +293,72 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 
 .foot { font-size: 12.5px; color: var(--mute); margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); }
 .mentors { margin: 22px 0 0; font-size: 16px; line-height: 1.6; }
-</style>
+/* ---------- live demo page ---------- */
+#demo { align-items: stretch; padding-block: calc(var(--nav-h) + 20px) 24px; }
+#demo .demo-in { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 24px; height: calc(100svh - var(--nav-h) - 44px); width: 100%; }
+#demo .demo-side { display: flex; flex-direction: column; min-height: 0; overflow: auto; padding-right: 4px; }
+#demo .demo-kick { font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 6px; }
+#demo .demo-side h2 { font-size: clamp(26px, 2.4vw, 34px); margin: 0 0 14px; }
+#demoTabs { display: grid; gap: 6px; }
+#demoTabs button { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: center; text-align: left; border: 0; cursor: pointer; background: var(--demo-tab, rgba(0,0,0,.05)); color: inherit; padding: 10px 12px; font: inherit; border-radius: var(--demo-r, 14px); transition: background .2s, color .2s; }
+#demoTabs button i { font-style: normal; font-size: 13px; text-align: center; color: var(--demo-accent, #ff3056); }
+#demoTabs button b { display: block; font-size: 14.5px; }
+#demoTabs button small { display: block; font-size: 12px; opacity: .65; }
+#demoTabs button:hover { background: var(--demo-tab-h, rgba(0,0,0,.09)); }
+#demoTabs button[aria-pressed="true"] { background: var(--demo-on, #141419); color: #fff; }
+#demoTabs button[aria-pressed="true"] small { opacity: .75; }
+#demoAside { margin-top: 14px; display: grid; gap: 10px; flex: none; }
+#demoAside > * { max-width: 100%; margin: 0 !important; }
+#demoCap { margin-top: auto; padding-top: 10px; font-size: 12px; opacity: .6; }
+.demo-stage { position: relative; min-width: 0; min-height: 0; height: 100%; display: flex; flex-direction: column; gap: 10px; }
+.demo-stage > * { width: 100% !important; max-width: none !important; margin: 0 !important; }
+.demo-stage > *:first-child { flex: 1 1 auto; min-height: 0; }
+@media (max-height: 820px) and (min-width: 900px) {
+  #demoTabs button small { display: none; }
+  #demoTabs button { padding: 8px 12px; }
+  #demo .demo-side h2 { font-size: 24px; margin-bottom: 10px; }
+  #demoAside { margin-top: 10px; }
+}
+@media (max-width: 899px) {
+  #demo .demo-in { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  #demo .demo-side { display: contents; }
+  #demo .demo-kick { order: 0; } #demo .demo-side h2 { order: 1; margin: 0; }
+  #demoTabs { order: 2; display: flex; overflow-x: auto; gap: 6px; margin: 0 -16px; padding: 0 16px 4px; scrollbar-width: none; }
+  #demoTabs::-webkit-scrollbar { display: none; }
+  #demoTabs button { flex: 0 0 auto; grid-template-columns: auto; padding: 9px 14px; border-radius: 999px; }
+  #demoTabs button i:empty, #demoTabs button small { display: none; }
+  #demoTabs button:has(i:not(:empty)) { grid-template-columns: auto auto; gap: 6px; }
+  .demo-stage { order: 3; height: 68svh; }
+  #demoAside { order: 4; margin: 0; } #demoCap { order: 5; margin: 0; padding: 0; }
+}
 
+.nav-links a.nav-demo { white-space: nowrap; }
+.nav-links a.nav-demo { background: var(--accent); color: #fff; padding: 6px 14px; border-bottom: 0; }
+.nav-links a.nav-demo:hover, .nav-links a.nav-demo.on { background: var(--ink); }
+@media (max-width: 860px) { .nav-links:has(.nav-demo) { display: flex; margin-left: auto; } .nav-links li:not(.nav-demo-li) { display: none; } }
+#demo { border-bottom: 0; --demo-on: var(--ink); --demo-accent: var(--accent); --demo-r: 0px; --demo-tab: var(--bg-2); --demo-tab-h: var(--accent-soft); }
+#demo .demo-kick { color: var(--accent); }
+#demoStage .media { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 0; }
+#demoStage .media > .tabs { margin-bottom: 12px; flex: none; }
+#demoStage .view.on { display: flex; flex-direction: column; align-items: center; width: 100%; min-height: 0; }
+#demoStage .spot-wrap { width: fit-content; max-width: 100%; margin: 0 auto; }
+#demoStage .spot-wrap > img, #demoStage .spot-wrap > video, #demoStage #v-foot img { width: auto !important; max-width: 100%; max-height: calc(100svh - var(--nav-h) - 150px); }
+#demoStage #v-under .spot-wrap > img { max-height: calc(100svh - var(--nav-h) - 210px); }
+#demoStage .frame.shot { width: min(100%, calc((100svh - var(--nav-h) - 190px) * 1600 / 927)); }
+#demoStage .pulse { display: flex; flex-direction: column; justify-content: center; }
+#demoStage .pulse svg { max-height: calc(100svh - var(--nav-h) - 340px); }
+#demoStage #clinMedia .frame { width: 100%; }
+#demoAside .parts button { padding-block: 8px; }
+#demoAside #clinPipe .pipe { grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 0; }
+#demoAside #clinPipe .pipe button { padding: 9px 12px; }
+#demoAside #clinPipe .pipe-d { font-size: 14px; }
+#demoAside .parts small { display: none; }
+#demoStage .pulse { border: 0; background: none; padding: 0; }
+@media (max-width: 899px) { #demoStage .spot-wrap > img, #demoStage .spot-wrap > video, #demoStage #v-foot img { max-height: 58svh; } .demo-stage { height: auto; min-height: 50svh; } }
+</style>
 </head>
 <body>
+
 <header class="nav" id="nav">
   <div class="nav-in">
     <a href="#top" aria-label="Back to top"><img class="nav-logo" src="media/logo.svg" alt="Vena Vitals" width="395" height="58"></a>
@@ -306,6 +368,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
       <li><a href="#science" data-grp="science">Technology</a></li>
       <li><a href="#work" data-grp="work">My work</a></li>
       <li><a href="#thanks" data-grp="end">Contact</a></li>
+      <li class="nav-demo-li"><a href="#demo" data-grp="demo" class="nav-demo">Live demo</a></li>
     </ul>
     <button class="tour-btn" id="tourBtn" type="button" aria-pressed="false" title="Show only the sections for a 5-minute overview">5-min tour</button>
   </div>
@@ -380,7 +443,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
         <li><button data-k="window"><span class="n">05</span><b>Sensor window</b><small>Underside, sits on the skin over the artery</small></button></li>
       </ol>
     </div>
-    <div class="media reveal" style="--d:2">
+    <div class="media reveal" style="--d:2" id="hwMedia">
       <div class="tabs" role="tablist" aria-label="Wearable views">
         <button role="tab" aria-selected="true" data-view="v-top">Top</button>
         <button role="tab" aria-selected="false" data-view="v-under">Underside</button>
@@ -463,7 +526,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 <!-- SCIENCE -->
 <section class="s" id="science" data-core="35" data-name="How it senses" data-grp="science">
   <div class="wrap grid g-media-text">
-    <div class="media reveal">
+    <div class="media reveal" id="sciMedia">
       <div class="spot-wrap" data-spots="sci">
         <video class="lazyvid" src="media/sense.mp4" poster="media/sense.jpg" muted loop playsinline preload="metadata" aria-label="Animation: the layered sensor on skin above an artery; each beat the artery swells and presses up into the sensor" width="1140" height="804"></video>
         <button class="spot" data-k="elast" style="left:67.6%; top:10.1%" aria-label="Silicone elastomer"></button>
@@ -501,7 +564,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
       <p class="small reveal" style="--d:3; margin-top:14px;">Drag the slider or play a pulse.</p>
     </div>
     <div class="media reveal" style="--d:2">
-      <div class="pulse">
+      <div class="pulse" id="pulseBox">
         <svg viewBox="0 0 600 300" role="img" aria-label="Interactive diagram: two gold plates separated by an air gap above skin and an artery">
           <rect x="0" y="0" width="600" height="300" fill="#ffffff"/>
           <rect x="90" y="40" width="420" height="34" fill="#a59aa3"/>
@@ -619,7 +682,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 <!-- FIXTURE -->
 <section class="s alt" id="fixture" data-core="40" data-name="Test fixture" data-grp="work">
   <div class="wrap grid g-media-text">
-    <div class="media reveal">
+    <div class="media reveal" id="fixMedia">
       <div class="tabs" role="tablist" aria-label="Fixture and app screens">
         <button role="tab" aria-selected="true" data-view="f-rig">Fixture</button>
         <button role="tab" aria-selected="false" data-view="f-cfg">Setup</button>
@@ -700,7 +763,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
       <p class="eyebrow reveal">Clinical data</p>
       <h2 class="reveal" style="--d:1">Sensor vs. <span class="red">arterial line.</span></h2>
       <p class="lede reveal" style="--d:2">Accuracy claims rest on agreement with the clinical gold standard. I built the MATLAB analysis that compares them.</p>
-      <div class="reveal" style="--d:3">
+      <div class="reveal" style="--d:3" id="clinPipe">
         <div class="pipe" role="tablist" aria-label="Analysis stages" id="pipe">
           <button role="tab" aria-selected="true" data-t="Time-align the sensor and arterial-line recordings from the same case so the beats line up."><span>01</span><b>Align</b></button>
           <button role="tab" aria-selected="false" data-t="Remove artifacts and stretches with lost or unusable signal before any comparison."><span>02</span><b>Clean</b></button>
@@ -711,7 +774,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
       </div>
       <div class="card red reveal" style="--d:4; max-width:420px; margin-top:8px;"><p class="label">Targets · ISO 81060-2</p><p style="margin:0; font-size:20px; font-weight:800; line-height:1.3;">Mean bias ≤ 5 mmHg<br>SD ≤ 8 mmHg</p></div>
     </div>
-    <div class="media reveal" style="--d:2">
+    <div class="media reveal" style="--d:2" id="clinMedia">
       <div class="frame"><img src="media/clinical.webp" alt="Illustrative MATLAB-style figure: beat-to-beat overlay of sensor and arterial-line systolic pressure, and a Bland-Altman plot with mean bias and ±1.96 SD limits" width="1800" height="637" loading="lazy"></div>
       <p class="cap">Illustrative figure, not study data.</p>
     </div>
@@ -746,6 +809,20 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
     <div class="media reveal" style="--d:2"><img src="media/hero.webp" alt="The VeriTrack wearable" width="1440" height="810" loading="lazy"></div>
   </div>
   <p class="wrap foot" style="position:absolute; left:0; right:0; bottom:8px; border:0;">VeriTrack has been submitted for FDA 510(k) review and is not available for commercial sale. Confidential details have been generalized; figures marked illustrative are not study data.</p>
+</section>
+
+<!-- LIVE DEMO -->
+<section class="s" id="demo" data-name="Live demo" data-grp="demo">
+  <div class="wrap demo-in">
+    <div class="demo-side">
+      <p class="demo-kick eyebrow">Live demo</p>
+      <h2>VeriTrack, <span class="red">all in one place.</span></h2>
+      <div id="demoTabs" role="group" aria-label="Pick a demo"></div>
+      <div id="demoAside"></div>
+      <p id="demoCap"></p>
+    </div>
+    <div class="demo-stage" id="demoStage"></div>
+  </div>
 </section>
 
 </main>
@@ -1049,6 +1126,59 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
     }, { threshold: 0.5 });
     io.observe(el);
   });
+})();
+</script>
+<script>
+window.__DEMO = { tabs: [
+  { k: 'hw', label: 'The wearable', sub: 'Parts, top and underside', core: true, main: ['#hwMedia'], aside: ['#hwParts'], cap: 'Hover a part to find it. Switch views above.' },
+  { k: 'sci', label: 'How it senses', sub: 'Sensor on the artery', main: ['#sciMedia'], aside: ['#sciParts'], cap: 'Hover a layer to find it.' },
+  { k: 'cap', label: 'Capacitor', sub: 'Drag the pressure', main: ['#pulseBox'], cap: 'C = ε₀εᵣA / d. Drag the slider or play a pulse.' },
+  { k: 'fix', label: 'Test fixture app', sub: 'Rig and GUI screens', main: ['#fixMedia'], cap: 'Fixture, setup, EM, fatigue and analysis screens.' },
+  { k: 'clin', label: 'Clinical analysis', sub: 'Sensor vs. arterial line', main: ['#clinMedia'], aside: ['#clinPipe'], cap: 'Click a stage to see what it does.' }
+] };
+// ---------- live demo page: borrows each interactive into one big stage ----------
+(function () {
+  var cfg = window.__DEMO; if (!cfg) return;
+  var sec = document.getElementById('demo'); if (!sec) return;
+  var stage = document.getElementById('demoStage'), aside = document.getElementById('demoAside'), tabsEl = document.getElementById('demoTabs'), cap = document.getElementById('demoCap');
+  var active = null, inView = false, borrowed = [];
+  function q(sel) { return document.querySelector(sel); }
+  function nudge() { requestAnimationFrame(function () { window.dispatchEvent(new Event('resize')); requestAnimationFrame(function () { window.dispatchEvent(new Event('resize')); }); }); }
+  function take(el, into) {
+    if (!el || el.__ph) return;
+    var ph = document.createComment('demo-placeholder'); el.parentNode.insertBefore(ph, el); el.__ph = ph;
+    into.appendChild(el); borrowed.push(el);
+    el.classList.add('in'); [].forEach.call(el.querySelectorAll('.reveal'), function (r) { r.classList.add('in'); });
+    [].forEach.call(el.querySelectorAll('.fill'), function (f) { if (f.dataset.w) f.style.width = f.dataset.w + '%'; });
+  }
+  function giveBack() {
+    borrowed.forEach(function (el) { if (el.__ph && el.__ph.parentNode) { el.__ph.parentNode.insertBefore(el, el.__ph); el.__ph.remove(); } el.__ph = null; });
+    borrowed = []; stage.innerHTML = ''; aside.innerHTML = '';
+  }
+  function load(k) {
+    var t = cfg.tabs.filter(function (x) { return x.k === k; })[0]; if (!t) return;
+    active = k;
+    [].forEach.call(tabsEl.children, function (b) { b.setAttribute('aria-pressed', b.dataset.k === k ? 'true' : 'false'); });
+    cap.textContent = t.cap || '';
+    stage.className = 'demo-stage ds-' + k;
+    if (!inView) return;
+    giveBack();
+    (t.main || []).forEach(function (s) { take(q(s), stage); });
+    (t.aside || []).forEach(function (s) { take(q(s), aside); });
+    nudge();
+  }
+  cfg.tabs.forEach(function (t) {
+    var b = document.createElement('button'); b.type = 'button'; b.dataset.k = t.k; b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = (t.core ? '<i>★</i>' : '<i></i>') + '<span><b>' + t.label + '</b>' + (t.sub ? '<small>' + t.sub + '</small>' : '') + '</span>';
+    b.addEventListener('click', function () { load(t.k); });
+    tabsEl.appendChild(b);
+  });
+  new IntersectionObserver(function (es) {
+    var was = inView; inView = es[0].intersectionRatio > 0.35;
+    if (inView && !was) load(active || cfg.tabs[0].k);
+    if (!inView && was) { giveBack(); nudge(); }
+  }, { threshold: [0, 0.35, 0.6] }).observe(sec);
+  load(cfg.tabs[0].k);
 })();
 </script>
 
