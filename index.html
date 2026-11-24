@@ -252,6 +252,25 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 .tl p { margin: 6px 0 0; font-size: 14.5px; line-height: 1.45; }
 @media (max-width: 900px) { .tl { grid-template-columns: 1fr; } .tl::before { left: 7px; right: auto; width: 2px; top: 0; bottom: 0; height: auto; background: linear-gradient(180deg, var(--accent) 0 58%, var(--line) 58% 100%); } .tl li { padding: 0 0 22px 34px; } }
 
+/* ---------- merged hero: OR video + translucent timeline ---------- */
+.hero-or .wrap { position: relative; z-index: 1; display: flex; flex-direction: column; gap: clamp(24px, 5vh, 56px); }
+.hero-or .hero-text { max-width: 620px; }
+.hero-or .shade { background: linear-gradient(90deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.55) 55%, rgba(0,0,0,.25) 100%), linear-gradient(0deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 45%); }
+.glass { background: rgba(255,255,255,.08); -webkit-backdrop-filter: blur(12px) saturate(1.1); backdrop-filter: blur(12px) saturate(1.1); border: 1px solid rgba(255,255,255,.16); padding: 18px 24px 16px; }
+.glass > .eyebrow { margin: 0; }
+.glass .tl { margin-top: 16px; }
+.glass .tl::before { background: linear-gradient(90deg, var(--accent) 0 58%, rgba(255,255,255,.28) 58% 100%); }
+.glass .tl li::before { box-shadow: none; }
+.glass .tl li.now::before { box-shadow: 0 0 0 5px rgba(217,72,72,.35); }
+.glass .tl li.future::before { background: transparent; border-color: rgba(255,255,255,.6); }
+.glass .tl li.future .yr { color: rgba(255,255,255,.6); }
+.glass .tl .yr { color: #ff7b72; }
+.glass .tl p { color: rgba(255,255,255,.88); font-size: 13.5px; }
+.glass-note { margin: 14px 0 0; font-size: 12px; color: rgba(255,255,255,.6); }
+@media (max-width: 900px) { .hero-or .shade { background: linear-gradient(180deg, rgba(0,0,0,.72), rgba(0,0,0,.6)); } }
+@media (max-width: 900px) { .glass .tl::before { background: linear-gradient(180deg, var(--accent) 0 58%, rgba(255,255,255,.28) 58% 100%); } }
+@media (max-height: 800px) and (min-width: 900px) { .glass { padding: 14px 20px 12px; } .glass .tl { margin-top: 12px; } .glass .tl li { padding-top: 28px; } .glass .tl p { font-size: 13px; } }
+
 /* bars */
 .bars { display: grid; gap: 14px; }
 .bar { display: grid; grid-template-columns: 150px 1fr 56px; align-items: center; gap: 12px; font-size: 14px; }
@@ -394,23 +413,29 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 
 <main>
 
-<!-- HERO -->
-<section class="s" id="top" data-core="20" data-name="Intro" data-grp="company">
-  <div class="wrap grid g-text-media">
-    <div class="text">
+<!-- HERO: OR video background + program timeline (merged Intro, In the OR, Program status) -->
+<section class="s dark hero-or" id="top" data-core="20" data-name="Intro" data-grp="company">
+  <video class="bgvid lazyvid" src="media/or.mp4" poster="media/or.jpg" muted loop playsinline preload="metadata" aria-label="Operating room: a clinician at the bedside monitor while VeriTrack is worn on the patient’s foot"></video>
+  <div class="shade" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="text hero-text">
       <p class="eyebrow reveal">Engineering internship · Vena Vitals</p>
       <h1 class="reveal" style="--d:1">VeriTrack continuous blood pressure, <span class="red">from bench to clinic.</span></h1>
-      <p class="lede reveal" style="--d:2">Test systems, quality and clinical data for a soft wearable that reads blood pressure beat to beat from the top of the foot.</p>
-      <div class="reveal" style="--d:3; margin-top:28px; display:flex; flex-direction:column; gap:2px;">
-        <b style="font-size:16px;">Jacqueline Chuang</b>
-        <span class="small">Engineering Intern · Irvine, CA · summer 2026, remote through 2026–27</span>
-      </div>
+      <p class="lede reveal" style="--d:2">Test systems, quality and clinical data for a soft wearable that reads blood pressure beat to beat from the top of the foot. It stays clear of the surgical field and streams to a bedside iPad over Bluetooth.</p>
     </div>
-    <div class="media reveal" style="--d:2">
-      <video class="lazyvid" src="media/turn.mp4" poster="media/turn.jpg" muted loop playsinline preload="metadata" aria-label="The VeriTrack wearable rotating to show its straps and sensor pod" width="1160" height="534"></video>
+    <div class="glass reveal" style="--d:3">
+      <p class="eyebrow">Program status</p>
+      <ol class="tl">
+      <li><span class="yr">2019</span><p>Wrinkled-gold sensor published at the Khine Lab, UC Irvine. Company founded.</p></li>
+      <li><span class="yr">2020</span><p>Y Combinator, Summer 2020.</p></li>
+      <li><span class="yr">Clinical</span><p>Intraoperative comparison against arterial lines.</p></li>
+      <li class="now"><span class="yr">Now</span><p>510(k) submitted, under FDA review.</p></li>
+      <li class="future"><span class="yr">Pending</span><p>FDA clearance decision.</p></li>
+      <li class="future"><span class="yr">Next</span><p>Hospital deployment, then sleep, chronic and home care.</p></li>
+    </ol>
+      <p class="glass-note">A 510(k) outcome is clearance, not approval. VeriTrack is investigational and not available for sale.</p>
     </div>
   </div>
-  <a class="scroll-cue" href="#need">Scroll</a>
 </section>
 
 <!-- NEED -->
@@ -428,19 +453,6 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
         <div class="card"><p class="label">Arterial line</p><h3>Continuous, but invasive</h3><p class="small" style="margin-top:6px;">The reference standard needs a catheter in an artery.</p></div>
       </div>
       <div class="card red block reveal" style="--d:3"><p class="label">Design goal</p><p style="margin:0; font-size:18px; font-weight:700; line-height:1.35;">Arterial-line-quality data from a noninvasive wearable.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- OR VIDEO -->
-<section class="s dark" id="or" data-name="In the OR" data-grp="company">
-  <video class="bgvid lazyvid" src="media/or.mp4" poster="media/or.jpg" muted loop playsinline preload="metadata" aria-label="Operating room: a clinician at the bedside monitor while VeriTrack is worn on the patient’s foot"></video>
-  <div class="shade" aria-hidden="true"></div>
-  <div class="wrap">
-    <div class="text" style="max-width:520px;">
-      <p class="eyebrow reveal">In the operating room</p>
-      <h2 class="reveal" style="--d:1">Worn on the foot. <span class="red">Clear of the surgical field.</span></h2>
-      <p class="lede reveal" style="--d:2">The wearable streams to an iPad at the bedside over Bluetooth. No tubing, and the arms stay free for IVs and other lines.</p>
     </div>
   </div>
 </section>
@@ -465,6 +477,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
         <button role="tab" aria-selected="true" data-view="v-top">Top</button>
         <button role="tab" aria-selected="false" data-view="v-under">Underside</button>
         <button role="tab" aria-selected="false" data-view="v-foot">On a patient</button>
+        <button role="tab" aria-selected="false" data-view="v-spin">360°</button>
       </div>
       <div class="view on" id="v-top">
         <div class="spot-wrap" data-spots="hw">
@@ -481,6 +494,9 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
           <img src="media/underside.webp" alt="Underside of the wearable with the sensor window at the center" width="1037" height="450">
           <button class="spot" data-k="window" style="left:51.8%; top:35%" aria-label="Sensor window"></button>
         </div>
+      </div>
+      <div class="view" id="v-spin">
+        <video class="lazyvid" src="media/turn.mp4" poster="media/turn.jpg" muted loop playsinline preload="metadata" aria-label="The VeriTrack wearable rotating to show its straps and sensor pod" width="1160" height="534" style="width:100%; height:auto; display:block;"></video>
       </div>
       <div class="view" id="v-foot">
         <img src="media/on-foot.jpg" alt="VeriTrack worn on the top of a patient’s foot in a hospital bed" width="740" height="416" loading="lazy" style="width:100%;">
@@ -520,23 +536,6 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
       <div class="frame"><img src="media/sleep.webp" alt="Two charts of change in blood pressure over an hour of sleep: flat for a healthy subject, frequent large surges for a subject with obstructive sleep apnea" width="945" height="379" loading="lazy"></div>
       <p class="cap">Change in blood pressure over one hour of sleep.</p>
     </div>
-  </div>
-</section>
-
-<!-- STATUS -->
-<section class="s alt" id="status" data-name="Program status" data-grp="product">
-  <div class="wrap">
-    <p class="eyebrow reveal">Program status</p>
-    <h2 class="reveal" style="--d:1">Research <span class="red">to regulatory review.</span></h2>
-    <ol class="tl reveal" style="--d:2">
-      <li><span class="yr">2019</span><p>Wrinkled-gold sensor published at the Khine Lab, UC Irvine. Company founded.</p></li>
-      <li><span class="yr">2020</span><p>Y Combinator, Summer 2020.</p></li>
-      <li><span class="yr">Clinical</span><p>Intraoperative comparison against arterial lines.</p></li>
-      <li class="now"><span class="yr">Now</span><p>510(k) submitted, under FDA review.</p></li>
-      <li class="future"><span class="yr">Pending</span><p>FDA clearance decision.</p></li>
-      <li class="future"><span class="yr">Next</span><p>Hospital deployment, then sleep, chronic and home care.</p></li>
-    </ol>
-    <p class="small reveal" style="--d:3; margin-top:36px; max-width:46em;">A 510(k) shows substantial equivalence to a device already on the market; the outcome is clearance, not approval. VeriTrack is investigational and not available for sale.</p>
   </div>
 </section>
 
