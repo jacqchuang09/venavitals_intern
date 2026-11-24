@@ -268,6 +268,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 .split #v-under .spot-wrap { padding: 18px !important; }
 .partcap { margin: 12px 0 0; padding: 10px 12px; background: var(--bg-2); border-left: 3px solid var(--accent); font-size: 14px; min-height: 3.2em; display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
 .partcap b { font-weight: 700; }
+.partcap:empty { visibility: hidden; }
 .partcap span { color: var(--mute); }
 @media (max-width: 900px) { .split { grid-template-columns: minmax(0, 1fr); } .split #v-top img { max-height: none; } }
 .goal { margin: 12px 0 0; padding: 10px 12px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 600; line-height: 1.35; }
@@ -578,7 +579,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
           <button class="spot" data-k="window" style="left:51.8%; top:35%" aria-label="Sensor window"></button>
         </div>
       </div>
-        <p class="partcap" id="hwPartsCap" aria-live="polite"><b>Hover a red dot</b><span>to see what each part does.</span></p>
+        <p class="partcap" id="hwPartsCap" aria-live="polite"></p>
       </div>
       <ol class="parts" id="hwParts" hidden>
         <li><button data-k="pod"><span class="n">01</span><b>Sensor pod</b><small>Electronics, Bluetooth to the iPad</small></button></li>
@@ -601,7 +602,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
         <button class="spot" data-k="skin" style="left:12.2%; top:41%" aria-label="Skin"></button>
         <button class="spot" data-k="artery" style="left:91.2%; top:49.8%" aria-label="Artery"></button>
       </div>
-        <p class="partcap" id="sciPartsCap" aria-live="polite"><b>Hover a red dot</b><span>to see each layer.</span></p>
+        <p class="partcap" id="sciPartsCap" aria-live="polite"></p>
       </div>
       <ol class="parts" id="sciParts" hidden>
         <li><button data-k="elast"><span class="n">01</span><b>Silicone elastomer</b><small>Soft layer that flexes with the skin</small></button></li>
@@ -624,7 +625,6 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
         <span class="eq" aria-label="C equals epsilon zero times epsilon r times A, over d">C = <span class="fr"><span>ε₀ εᵣ A</span><span>d</span></span></span>
       </div>
       <p class="lede reveal" style="--d:3">When the artery swells, the gap <i>d</i> between the gold plates shrinks and air (εᵣ = 1) is pushed out, so capacitance goes up. Calibration turns that into mmHg.</p>
-      <p class="small reveal" style="--d:3; margin-top:14px;">Drag the slider or play a pulse.</p>
     </div>
     <div class="media reveal" style="--d:2">
       <div class="pulse" id="pulseBox">
@@ -761,7 +761,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
             <label class="rig-rng">Force limit <output id="rigLimO">5.0 N</output><input type="range" id="rigLim" min="1" max="8" step="0.5" value="5"></label>
             <div class="rig-btns"><button type="button" id="rigRun">Run EM test</button><button type="button" id="rigUnplug">Unplug load cell</button><button type="button" id="rigReset">Home</button></div>
           </div>
-          <p class="rig-log" id="rigLog" aria-live="polite"><b>READY</b> Drag the position slider or run a test.</p>
+          <p class="rig-log" id="rigLog" aria-live="polite"><b>READY</b></p>
         </div>
         <p class="cap">Illustrative values. The probe presses the sensor; the load cell underneath measures the force it feels.</p>
       </div>
@@ -1324,11 +1324,11 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 </script>
 <script>
 window.__DEMO = { tabs: [
-  { k: 'hw', label: 'The wearable', sub: 'Parts, top and underside', core: true, main: ['#hwMedia'], cap: 'Hover a red dot to see each part. Switch views above.' },
-  { k: 'sci', label: 'How it senses', sub: 'Sensor on the artery', main: ['#sciMedia'], cap: 'Hover a red dot to see each layer.' },
-  { k: 'cap', label: 'Capacitor', sub: 'Drag the pressure', main: ['#pulseBox'], cap: 'C = ε₀εᵣA / d. Drag the slider or play a pulse.' },
+  { k: 'hw', label: 'The wearable', sub: 'Parts, top and underside', core: true, main: ['#hwMedia'], cap: '' },
+  { k: 'sci', label: 'How it senses', sub: 'Sensor on the artery', main: ['#sciMedia'], cap: '' },
+  { k: 'cap', label: 'Capacitor', sub: 'Pressure to capacitance', main: ['#pulseBox'], cap: 'C = ε₀εᵣA / d' },
   { k: 'fix', label: 'Test fixture app', sub: 'Rig and GUI screens', main: ['#fixMedia'], cap: 'Fixture, setup, EM, fatigue and analysis screens.' },
-  { k: 'clin', label: 'Clinical analysis', sub: 'Sensor vs. arterial line', main: ['#clinMedia'], aside: ['#clinPipe'], cap: 'Click a stage to see what it does.' }
+  { k: 'clin', label: 'Clinical analysis', sub: 'Sensor vs. arterial line', main: ['#clinMedia'], aside: ['#clinPipe'], cap: '' }
 ] };
 // ---------- live demo page: borrows each interactive into one big stage ----------
 (function () {
