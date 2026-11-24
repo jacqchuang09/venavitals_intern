@@ -296,6 +296,22 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 .rig-log.ok b { color: #2f8a4c; }
 @media (max-width: 1100px) { .rig-ctl { grid-template-columns: 1fr 1fr; } .rig-btns { grid-column: 1 / -1; } }
 @media (max-width: 520px) { .rig-ctl { grid-template-columns: 1fr; } .rig-btns { flex-wrap: wrap; } }
+
+/* lessons: failure -> design cards */
+.fm { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 32px; }
+.fm-c { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 22px 22px 18px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); border-top: 3px solid var(--accent); color: inherit; text-decoration: none; overflow: hidden; transition: transform .25s, background .25s, border-color .25s; }
+.fm-c:hover { transform: translateY(-4px); background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.28); border-top-color: var(--accent); }
+.fm-n { position: absolute; right: 14px; bottom: -10px; font-size: 84px; font-weight: 800; letter-spacing: -.05em; color: rgba(255,255,255,.07); line-height: 1; pointer-events: none; }
+.fm-tag { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #ff7b72; }
+.fm-c h3 { margin: 0 0 4px; font-size: 21px; line-height: 1.2; color: #fff; }
+.fm-row { display: grid; grid-template-columns: 62px 1fr; gap: 10px; align-items: baseline; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.1); }
+.fm-row span { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); }
+.fm-row.ok span { color: #7fd69a; }
+.fm-row p { margin: 0; font-size: 14px; line-height: 1.45; color: rgba(255,255,255,.82); }
+.fm-go { margin: auto 0 0; padding-top: 8px; font-size: 13px; font-weight: 600; color: #ff7b72; }
+.fm-thanks { margin: 28px 0 0; font-size: 13.5px; color: rgba(255,255,255,.55); }
+@media (max-width: 900px) { .fm { grid-template-columns: 1fr; } }
+@media (max-height: 800px) and (min-width: 900px) { .fm { margin-top: 20px; } .fm-c { padding: 16px 18px 14px; gap: 8px; } .fm-thanks { margin-top: 18px; } }
 /* wearable + workflow: compact 3-step row */
 .flow3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
 .flow3 > div { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: center; padding: 10px 12px; background: var(--bg-2); border-top: 2px solid var(--accent); }
@@ -840,20 +856,31 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 </section>
 
 <!-- LESSONS -->
-<section class="s alt" id="lessons" data-name="Lessons" data-grp="work">
-  <div class="wrap grid g-2">
-    <div class="text">
-      <p class="eyebrow reveal">Lessons learned</p>
-      <h2 class="reveal" style="--d:1">Design for <span class="red">failure modes.</span></h2>
-      <p class="lede reveal" style="--d:2">The same idea showed up in hardware, software and process.</p>
-      <p class="small reveal" style="--d:3; margin-top:28px;">Thank you to my mentors: Josh Kim, Abby Cabush, Jeff Lim, Jason Messner and Justin Hight.</p>
-      <p class="small reveal" style="--d:3; margin-top:10px; font-size:12px; opacity:.75;">VeriTrack has been submitted for FDA 510(k) review and is not available for commercial sale. Confidential details have been generalized; figures marked illustrative are not study data.</p>
+<section class="s dark" id="lessons" data-name="Lessons" data-grp="work">
+  <div class="wrap">
+    <p class="eyebrow reveal">Lessons learned</p>
+    <h2 class="reveal" style="--d:1">Design for <span class="red">failure modes.</span></h2>
+    <div class="fm">
+      <a class="fm-c reveal" style="--d:2" href="#fixture">
+        <span class="fm-n">01</span><p class="fm-tag">Hardware</p><h3>Assume the connection fails.</h3>
+        <div class="fm-row"><span>Failure</span><p>A cable pulls or the sensor is overloaded mid-test.</p></div>
+        <div class="fm-row ok"><span>Design</span><p>Force and travel limits, disconnect detection, auto-recovery.</p></div>
+        <p class="fm-go">Test fixture →</p>
+      </a>
+      <a class="fm-c reveal" style="--d:3" href="#qc">
+        <span class="fm-n">02</span><p class="fm-tag">Software</p><h3>Keep the change small.</h3>
+        <div class="fm-row"><span>Failure</span><p>A fix ripples into code that was already validated.</p></div>
+        <div class="fm-row ok"><span>Design</span><p>The QC fix touched only the display layer, so nothing else needed retesting.</p></div>
+        <p class="fm-go">QC display →</p>
+      </a>
+      <a class="fm-c reveal" style="--d:4" href="#quality">
+        <span class="fm-n">03</span><p class="fm-tag">Process</p><h3>Prove the check can fail.</h3>
+        <div class="fm-row"><span>Failure</span><p>A check that passes everything, including bad units.</p></div>
+        <div class="fm-row ok"><span>Design</span><p>Every verification runs a known-bad unit to show it catches problems.</p></div>
+        <p class="fm-go">Quality →</p>
+      </a>
     </div>
-    <ul class="acc reveal" style="--d:2" id="lessonAcc">
-      <li class="open"><button class="acc-h" aria-expanded="true"><span class="acc-ic" style="font-weight:700; font-size:13px;">1</span><span class="acc-t">Hardware: assume the connection fails</span><span class="acc-car" aria-hidden="true">▼</span></button><div class="acc-b"><div><ul><li>Force and travel limits, disconnect detection and auto-recovery in the fixture app</li></ul></div></div></li>
-      <li><button class="acc-h" aria-expanded="false"><span class="acc-ic" style="font-weight:700; font-size:13px;">2</span><span class="acc-t">Software: keep the change small</span><span class="acc-car" aria-hidden="true">▼</span></button><div class="acc-b"><div><ul><li>The QC fix touched only the display layer, so nothing else needed retesting</li></ul></div></div></li>
-      <li><button class="acc-h" aria-expanded="false"><span class="acc-ic" style="font-weight:700; font-size:13px;">3</span><span class="acc-t">Process: prove the check can fail</span><span class="acc-car" aria-hidden="true">▼</span></button><div class="acc-b"><div><ul><li>Every verification needs a known-bad unit to show it catches problems</li></ul></div></div></li>
-    </ul>
+    <p class="fm-thanks reveal" style="--d:5">Thank you to my mentors: Josh Kim, Abby Cabush, Jeff Lim, Jason Messner and Justin Hight.</p>
   </div>
 </section>
 
