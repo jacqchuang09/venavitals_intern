@@ -299,7 +299,8 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 .rig-modes .rig-view { margin-left: auto; display: flex; gap: 0; }
 .rig-modes .rig-view button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
 #rigRun[disabled] { opacity: .45; cursor: default; }
-.clinviz { background: #fff; padding: 10px 12px; }
+.clinviz { background: #fff; padding: 12px 14px; }
+#clinical .pipe-d { font-size: 17px; line-height: 1.5; }
 .clinviz svg { width: 100%; height: auto; display: block; }
 .clinviz svg text { font-family: inherit; }
 .rig-shots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
@@ -854,7 +855,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
       <div class="card red reveal" style="--d:4; max-width:420px; margin-top:8px;"><p class="label">Targets · ISO 81060-2</p><p style="margin:0; font-size:20px; font-weight:800; line-height:1.3;">Mean bias ≤ 5 mmHg<br>SD ≤ 8 mmHg</p></div>
     </div>
     <div class="media reveal" style="--d:2" id="clinMedia">
-      <div class="frame clinviz"><svg id="clinSvg" viewBox="0 0 900 360" role="img" aria-label="The analysis pipeline on an illustrative recording: align the sensor to the arterial line, remove a motion artifact, detect every beat with an adaptive threshold, then compare systolic pressures."></svg></div>
+      <div class="frame clinviz"><svg id="clinSvg" viewBox="0 0 900 400" role="img" aria-label="The analysis pipeline on an illustrative recording: align the sensor to the arterial line, remove a motion artifact, detect every beat with an adaptive threshold, then compare systolic pressures."></svg></div>
       <p class="cap">Illustrative figure, not study data.</p>
     </div>
   </div>
@@ -1400,7 +1401,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
   var NS = 'http://www.w3.org/2000/svg', reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ACC = '#d84a4a', INK = '#2b2b2b', MUTE = '#8a8585', LINE = '#ece9e9', BLUE = '#3b7dd8';
   function el(t, a, p) { var e = document.createElementNS(NS, t); for (var k in a) e.setAttribute(k, a[k]); (p || svg).appendChild(e); return e; }
-  var X0 = 58, X1 = 880, Y0 = 46, Y1 = 300, T = 6;                    // 6 s window
+  var X0 = 70, X1 = 880, Y0 = 64, Y1 = 318, T = 6;                    // 6 s window
   function sx(t) { return X0 + t / T * (X1 - X0); }
   function sy(v) { return Y1 - (v - 50) / (150 - 50) * (Y1 - Y0); }    // mmHg 50..150
   function art(t) { var ph = ((t % 0.82) + 0.82) % 0.82 / 0.82; return 80 + 11 * Math.sin(2 * Math.PI * t / 5.5) + 42 * Math.exp(-Math.pow((ph - 0.16) / 0.07, 2)) + 9 * Math.exp(-Math.pow((ph - 0.42) / 0.05, 2)) - 6 * ph; }
@@ -1408,34 +1409,34 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
   function noise(t) { return 2.2 * Math.sin(t * 57) + 1.4 * Math.sin(t * 131 + 1); }
   function sen(t, lag, clean) { var v = art(t - lag) * 0.97 + 3 + noise(t) * 0.5; if (!clean && t > ART0 && t < ART1) v += 26 * Math.sin((t - ART0) * 19) * Math.sin(Math.PI * (t - ART0) / (ART1 - ART0)) + 18; return v; }
   // static frame
-  for (var v = 60; v <= 140; v += 20) { el('line', { x1: X0, x2: X1, y1: sy(v), y2: sy(v), stroke: LINE }); el('text', { x: X0 - 8, y: sy(v) + 4, 'text-anchor': 'end', 'font-size': 11, fill: MUTE }).textContent = v; }
-  el('text', { x: X0 - 8, y: Y0 - 18, 'text-anchor': 'start', 'font-size': 11, fill: MUTE }).textContent = 'mmHg';
-  for (var s = 0; s <= T; s++) el('text', { x: sx(s), y: Y1 + 18, 'text-anchor': 'middle', 'font-size': 11, fill: MUTE }).textContent = s + ' s';
+  for (var v = 60; v <= 140; v += 20) { el('line', { x1: X0, x2: X1, y1: sy(v), y2: sy(v), stroke: LINE }); el('text', { x: X0 - 8, y: sy(v) + 4, 'text-anchor': 'end', 'font-size': 16, fill: MUTE }).textContent = v; }
+  el('text', { x: X0 - 62, y: Y0 - 14, 'text-anchor': 'start', 'font-size': 16, fill: MUTE }).textContent = 'mmHg';
+  for (var s = 0; s <= T; s++) el('text', { x: sx(s), y: Y1 + 24, 'text-anchor': 'middle', 'font-size': 16, fill: MUTE }).textContent = s + ' s';
   var shade = el('rect', { x: sx(ART0), y: Y0 - 6, width: sx(ART1) - sx(ART0), height: Y1 - Y0 + 6, fill: 'rgba(216,74,74,.08)', opacity: 0 });
-  var shadeTx = el('text', { x: (sx(ART0) + sx(ART1)) / 2, y: Y0 + 8, 'text-anchor': 'middle', 'font-size': 11.5, 'font-weight': 700, fill: ACC, opacity: 0 }); shadeTx.textContent = 'motion artifact';
+  var shadeTx = el('text', { x: (sx(ART0) + sx(ART1)) / 2, y: Y0 + 12, 'text-anchor': 'middle', 'font-size': 17, 'font-weight': 700, fill: ACC, opacity: 0 }); shadeTx.textContent = 'motion artifact';
   var fixTh = el('line', { x1: X0, x2: X1, stroke: MUTE, 'stroke-dasharray': '2 4', opacity: 0 });
-  var fixTx = el('text', { x: X1, y: Y1 - 8, 'text-anchor': 'end', 'font-size': 11, fill: MUTE, opacity: 0 }); fixTx.textContent = 'fixed threshold (gray) misses beats when the baseline drops';
+  var fixTx = el('text', { x: X1, y: 378, 'text-anchor': 'end', 'font-size': 16, fill: MUTE, opacity: 0 }); fixTx.textContent = 'gray: a fixed threshold misses beats';
   var adTh = el('polyline', { fill: 'none', stroke: BLUE, 'stroke-width': 1.6, 'stroke-dasharray': '6 4', opacity: 0 });
   var pA = el('polyline', { fill: 'none', stroke: INK, 'stroke-width': 2 });
   var pS = el('polyline', { fill: 'none', stroke: ACC, 'stroke-width': 2 });
   var pS2 = el('polyline', { fill: 'none', stroke: ACC, 'stroke-width': 2 });
   var peaks = el('g', {});
   var ba = el('g', { opacity: 0 });
-  var note = el('text', { x: X0, y: 22, 'font-size': 13, 'font-weight': 700, fill: INK });
-  var key = el('g', {}); el('line', { x1: X1 - 250, x2: X1 - 228, y1: 18, y2: 18, stroke: INK, 'stroke-width': 2 }, key); el('text', { x: X1 - 222, y: 22, 'font-size': 11.5, fill: INK }, key).textContent = 'arterial line';
-  el('line', { x1: X1 - 128, x2: X1 - 106, y1: 18, y2: 18, stroke: ACC, 'stroke-width': 2 }, key); el('text', { x: X1 - 100, y: 22, 'font-size': 11.5, fill: INK }, key).textContent = 'VeriTrack sensor';
+  var note = el('text', { x: 8, y: 26, 'font-size': 20, 'font-weight': 700, fill: INK });
+  var key = el('g', {}); el('line', { x1: X0, x2: X0 + 26, y1: 372, y2: 372, stroke: INK, 'stroke-width': 3 }, key); el('text', { x: X0 + 34, y: 378, 'font-size': 17, fill: INK }, key).textContent = 'arterial line';
+  el('line', { x1: X0 + 170, x2: X0 + 196, y1: 372, y2: 372, stroke: ACC, 'stroke-width': 3 }, key); el('text', { x: X0 + 204, y: 378, 'font-size': 17, fill: INK }, key).textContent = 'VeriTrack sensor';
   // Bland-Altman panel (quantify)
   (function () {
-    var bx0 = 120, bx1 = 820, by0 = 60, by1 = 300; el('rect', { x: X0 - 50, y: 30, width: X1 - X0 + 60, height: 300, fill: '#fff' }, ba);
+    var bx0 = 110, bx1 = 790, by0 = 74, by1 = 318; el('rect', { x: 0, y: 36, width: 900, height: 364, fill: '#fff' }, ba);
     function bxs(m) { return bx0 + (m - 90) / (150 - 90) * (bx1 - bx0); } function bys(d) { return (by0 + by1) / 2 - d / 16 * (by1 - by0) / 2; }
-    for (var d = -15; d <= 15; d += 5) { el('line', { x1: bx0, x2: bx1, y1: bys(d), y2: bys(d), stroke: LINE }, ba); el('text', { x: bx0 - 8, y: bys(d) + 4, 'text-anchor': 'end', 'font-size': 11, fill: MUTE }, ba).textContent = (d > 0 ? '+' : '') + d; }
-    for (var m = 90; m <= 150; m += 10) el('text', { x: bxs(m), y: by1 + 18, 'text-anchor': 'middle', 'font-size': 11, fill: MUTE }, ba).textContent = m;
-    el('text', { x: bx1, y: by1 + 36, 'text-anchor': 'end', 'font-size': 11, fill: MUTE }, ba).textContent = 'mean of sensor and arterial line, systolic (mmHg)';
-    el('text', { x: bx0 - 8, y: by0 - 14, 'font-size': 11, fill: MUTE }, ba).textContent = 'sensor − arterial (mmHg)';
+    for (var d = -15; d <= 15; d += 5) { el('line', { x1: bx0, x2: bx1, y1: bys(d), y2: bys(d), stroke: LINE }, ba); el('text', { x: bx0 - 8, y: bys(d) + 4, 'text-anchor': 'end', 'font-size': 16, fill: MUTE }, ba).textContent = (d > 0 ? '+' : '') + d; }
+    for (var m = 90; m <= 150; m += 10) el('text', { x: bxs(m), y: by1 + 24, 'text-anchor': 'middle', 'font-size': 16, fill: MUTE }, ba).textContent = m;
+    el('text', { x: bx1, y: by1 + 50, 'text-anchor': 'end', 'font-size': 16, fill: MUTE }, ba).textContent = 'average systolic (mmHg)';
+    el('text', { x: bx0 - 100, y: by0 - 18, 'font-size': 16, fill: MUTE }, ba).textContent = 'sensor − arterial (mmHg)';
     var seed = 7; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
     var bias = 1.2, sd = 4.1;
     for (var i = 0; i < 140; i++) { var mm = 96 + rnd() * 48, g = (rnd() + rnd() + rnd() - 1.5) * 2 * sd * 0.82; el('circle', { cx: bxs(mm), cy: bys(bias + g), r: 3, fill: 'rgba(216,74,74,.45)' }, ba); }
-    [[bias, 'mean bias', INK, ''], [bias + 1.96 * sd, '+1.96 SD', MUTE, '5 4'], [bias - 1.96 * sd, '−1.96 SD', MUTE, '5 4']].forEach(function (q) { el('line', { x1: bx0, x2: bx1, y1: bys(q[0]), y2: bys(q[0]), stroke: q[2], 'stroke-width': 1.6, 'stroke-dasharray': q[3] }, ba); el('text', { x: bx1 + 6, y: bys(q[0]) + 4, 'font-size': 11, fill: q[2] }, ba).textContent = q[1]; });
+    [[bias, 'mean bias', INK, ''], [bias + 1.96 * sd, '+1.96 SD', MUTE, '5 4'], [bias - 1.96 * sd, '−1.96 SD', MUTE, '5 4']].forEach(function (q) { el('line', { x1: bx0, x2: bx1, y1: bys(q[0]), y2: bys(q[0]), stroke: q[2], 'stroke-width': 1.6, 'stroke-dasharray': q[3] }, ba); el('text', { x: bx1 + 6, y: bys(q[0]) + 4, 'font-size': 16, fill: q[2] }, ba).textContent = q[1]; });
   })();
   var step = 0, lag = LAG, anim = null;
   function series(f) { var a = []; for (var t = 0; t <= T; t += 0.01) { var v = f(t); a.push(v == null ? null : [sx(t), sy(v)]); } return a; }
@@ -1449,7 +1450,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
       pS.setAttribute('points', pts(a)); pS2.setAttribute('points', pts(b)); pS2.setAttribute('opacity', 1);
     } else pS2.setAttribute('opacity', 0);
     shade.setAttribute('opacity', step === 1 ? 1 : step >= 2 ? 0.55 : 0); shadeTx.setAttribute('opacity', step === 1 ? 1 : 0);
-    shadeTx.textContent = step === 1 ? 'motion artifact removed' : 'motion artifact';
+    shadeTx.textContent = step === 1 ? 'removed' : 'artifact';
     // adaptive threshold: 60% of the running max over the last ~1.2 s, above a running min
     while (peaks.firstChild) peaks.removeChild(peaks.firstChild);
     var show = step === 2;
@@ -1464,7 +1465,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
     }
     [pA, pS, pS2, peaks, shade].forEach(function (n) { n.style.display = step === 3 ? 'none' : ''; });
     ba.setAttribute('opacity', step === 3 ? 1 : 0); key.setAttribute('opacity', step === 3 ? 0 : 1);
-    note.textContent = ['Shift the sensor until its beats line up with the arterial line', 'Cut the stretch the motion artifact corrupted', 'Adaptive threshold (blue) follows the drifting baseline, so every beat is found', 'Every matched beat: difference vs. average (Bland-Altman)'][step];
+    note.textContent = ['Line the sensor up with the arterial line', 'Cut the motion artifact', 'Adaptive threshold (blue) finds every beat', 'Every beat: difference vs. average'][step];
   }
   window.__clinStep = function (i) {
     step = i; if (anim) cancelAnimationFrame(anim);
