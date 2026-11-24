@@ -68,6 +68,23 @@ html.tour .rail li:not(.core):not(.rail-key) { display: none; }
 html.tour .rail { gap: 14px; }
 html.tour .rail-key { display: none; }
 
+
+/* ---------- EXPERIMENT: mini slide thumbnails in the rail (remove this block + the "thumbs" JS to undo) ---------- */
+html.thumbs .rail { gap: var(--thgap, 5px); top: calc(50% + var(--nav-h) / 2 + 6px); }
+html.thumbs .rail a { padding: 1px 0; }
+html.thumbs .rail i, html.thumbs .rail b { display: none; }
+html.thumbs .rail .th { display: block; width: var(--thw, 58px); height: calc(var(--thw, 58px) * .625); background: #eee center / cover no-repeat; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,.14), 0 1px 3px rgba(0,0,0,.08); opacity: .5; filter: saturate(.7); transition: opacity .2s, transform .2s, box-shadow .2s, filter .2s; transform-origin: right center; }
+html.thumbs .rail li.core a { position: relative; }
+html.thumbs .rail li.core a::before { content: ''; position: absolute; left: -9px; top: 50%; width: 4px; height: 4px; margin-top: -2px; border-radius: 50%; background: var(--accent); opacity: .75; }
+html.thumbs .rail a:hover .th, html.thumbs .rail a:focus-visible .th { opacity: 1; filter: none; transform: scale(2.6); z-index: 2; position: relative; box-shadow: 0 0 0 1px rgba(0,0,0,.2), 0 8px 24px rgba(0,0,0,.25); }
+html.thumbs .rail a.on .th { opacity: 1; filter: none; transform: scale(1.18); box-shadow: 0 0 0 2px var(--accent), 0 3px 10px rgba(0,0,0,.2); }
+html.thumbs .rail a.on:hover .th { transform: scale(2.6); }
+html.thumbs .rail.dark .th { box-shadow: 0 0 0 1px rgba(255,255,255,.3); }
+html.thumbs .rail a:hover span { right: calc(100% + var(--thw, 58px) * 1.6 + 10px); }
+html.thumbs .rail-key i { display: inline-block !important; order: -1; width: 4px !important; height: 4px !important; border-radius: 50%; border: 0 !important; background: var(--accent) !important; box-shadow: none !important; }
+@media (min-width: 900px) and (max-width: 1640px) { html.thumbs main .wrap, html.thumbs main .s > .wrap { padding-right: calc(var(--thw, 58px) + 40px); } }
+html.thumbs.tour .rail li.core a::before { display: none; }
+.rail .th { display: none; }
 /* ---------- progress rail ---------- */
 .rail b { font-size: 11px; line-height: 1; font-weight: 700; color: rgba(43,43,43,.45); font-variant-numeric: tabular-nums; min-width: 15px; text-align: right; transition: color .2s; }
 .rail a:hover b, .rail a.on b { color: var(--accent); }
@@ -840,11 +857,21 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
     var li = document.createElement('li');
     if (s.dataset.core) li.className = 'core';
     var num = sections.indexOf(s) + 1;
-    li.innerHTML = '<a href="#' + s.id + '"><span></span><b>' + (num < 10 ? '0' : '') + num + '</b><i></i></a>';
-    li.querySelector('span').textContent = s.dataset.name + (s.dataset.core ? ' · 5-min' : '');
+    li.innerHTML = '<a href="#' + s.id + '"><span></span><b>' + (num < 10 ? '0' : '') + num + '</b><i></i><em class="th" style="background-image:url(media/thumbs/' + s.id + '.webp)"></em></a>';
+    li.querySelector('span').textContent = (num < 10 ? '0' : '') + num + ' · ' + s.dataset.name + (s.dataset.core ? ' · 5-min' : '');
     li.querySelector('a').setAttribute('aria-label', num + '. ' + s.dataset.name);
     rail.appendChild(li);
   });
+  // EXPERIMENT: mini slide thumbnails. Size them so the whole strip fits the window height.
+  doc.classList.add('thumbs');
+  function fitThumbs() {
+    var n = document.documentElement.classList.contains('tour') ? sections.filter(function (s) { return s.dataset.core; }).length : sections.length;
+    var avail = window.innerHeight - 64 - 120, per = avail / n - 7;
+    var w = Math.max(34, Math.min(64, per / 0.625));
+    doc.style.setProperty('--thw', w.toFixed(1) + 'px');
+  }
+  fitThumbs(); window.addEventListener('resize', fitThumbs);
+  new MutationObserver(fitThumbs).observe(doc, { attributes: true, attributeFilter: ['class'] });
   var key = document.createElement('li'); key.className = 'rail-key'; key.setAttribute('aria-hidden', 'true');
   key.innerHTML = '5-min overview <i></i>'; rail.appendChild(key);
   var railLinks = [].slice.call(rail.querySelectorAll('a'));
