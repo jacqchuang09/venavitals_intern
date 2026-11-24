@@ -257,7 +257,13 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 /* wearable | workflow split */
 .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
 .split h2 { font-size: clamp(26px, 2.5vw, 38px); margin-bottom: 18px; }
-.split .media .tabs { margin-bottom: 10px; }
+.split .media .tabs { margin-bottom: 10px; align-self: flex-start; }
+.split { align-items: stretch; }
+.split .half { display: flex; flex-direction: column; }
+.split .half > .media { flex: 1 1 auto; display: flex; flex-direction: column; }
+.split .half > .media .partcap { margin-top: auto; }
+.split .half > .media .view.on, .split .half > .media > .spot-wrap { margin-bottom: 12px; }
+.split .sublede { margin: -6px 0 10px; min-height: 2.9em; max-width: 34em; }
 .split #v-top img { max-height: 44svh; width: auto; max-width: 100%; margin: 0 auto; display: block; }
 .split #v-under .spot-wrap { padding: 18px !important; }
 .partcap { margin: 12px 0 0; padding: 10px 12px; background: var(--bg-2); border-left: 3px solid var(--accent); font-size: 14px; min-height: 3.2em; display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
@@ -515,7 +521,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
   <div class="wrap split">
     <div class="half">
       <p class="eyebrow reveal">The wearable</p>
-      <h2 class="reveal" style="--d:1">VeriTrack, <span class="red">piece by piece.</span></h2>
+      <h2 class="reveal" style="--d:1">VeriTrack,<br><span class="red">piece by piece.</span></h2>
       <div class="media reveal" style="--d:2" id="hwMedia">
         <div class="tabs" role="tablist" aria-label="Wearable views">
           <button role="tab" aria-selected="true" data-view="v-top">Top</button>
@@ -549,7 +555,8 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
     </div>
     <div class="half">
       <p class="eyebrow reveal">The science</p>
-      <h2 class="reveal" style="--d:1">Applanation tonometry, <span class="red">made soft.</span></h2>
+      <h2 class="reveal" style="--d:1">Applanation tonometry,<br><span class="red">made soft.</span></h2>
+      <p class="small reveal sublede" style="--d:2">The sensor reads the artery’s pulse right through the skin. Each beat pushes up into a soft capacitor.</p>
       <div class="media reveal" style="--d:2" id="sciMedia">
         <div class="spot-wrap" data-spots="sci">
         <video class="lazyvid" src="media/sense.mp4" poster="media/sense.jpg" muted loop playsinline preload="metadata" aria-label="Animation: the layered sensor on skin above an artery; each beat the artery swells and presses up into the sensor" width="1140" height="804"></video>
@@ -568,7 +575,6 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
         <li><button data-k="skin"><span class="n">04</span><b>Skin</b><small>Carries the pulse up to the sensor</small></button></li>
         <li><button data-k="artery"><span class="n">05</span><b>Artery</b><small>Swells with each pulse</small></button></li>
       </ol>
-      <p class="small reveal" style="--d:3; margin-top:10px;">The sensor reads the artery’s pulse right through the skin. Each beat pushes up into a soft capacitor.</p>
     </div>
   </div>
 </section>
