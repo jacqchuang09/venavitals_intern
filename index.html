@@ -475,31 +475,37 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
   </div>
 </section>
 
-<!-- NEED + FUTURE INDICATIONS (side by side) -->
+<!-- NEED -->
 <section class="s alt" id="need" data-core="40" data-name="Clinical need" data-grp="company">
-  <div class="wrap split">
-    <div class="half">
-      <p class="eyebrow reveal">Clinical need</p>
-      <h2 class="reveal" style="--d:1">Every beat. <span class="red">Not every five minutes.</span></h2>
-      <div class="media reveal" style="--d:2">
-        <div class="frame"><img src="media/bp-chart.webp" alt="MATLAB-style chart of systolic pressure over 60 minutes: a continuous trace dips during a short hypotensive event that 5-minute cuff readings miss" width="1600" height="690" loading="lazy"></div>
-        <p class="cap">5-minute cuff sampling misses a short hypotensive event.</p>
-      </div>
-      <div class="cards c2 reveal" style="--d:3; margin-top:14px;">
-        <div class="card"><p class="label">Cuff</p><h3>Noninvasive, but intermittent</h3><p class="small" style="margin-top:4px;">Drops between readings go unseen.</p></div>
-        <div class="card"><p class="label">Arterial line</p><h3>Continuous, but invasive</h3><p class="small" style="margin-top:4px;">Needs a catheter in an artery.</p></div>
-      </div>
-      <p class="goal reveal" style="--d:4"><b>Design goal</b>Arterial-line-quality data from a noninvasive wearable.</p>
+  <div class="wrap grid g-media-text">
+    <div class="media reveal">
+      <div class="frame"><img src="media/bp-chart.webp" alt="MATLAB-style chart of systolic pressure over 60 minutes: a continuous trace dips during a short hypotensive event that 5-minute cuff readings miss" width="1600" height="690" loading="lazy"></div>
+      <p class="cap">5-minute cuff sampling misses a short hypotensive event.</p>
     </div>
-    <div class="half">
+    <div class="text">
+      <p class="eyebrow reveal">Clinical need</p>
+      <h2 class="reveal" style="--d:1">Blood pressure every beat. <span class="red">Not every five minutes.</span></h2>
+      <div class="cards c2 block reveal" style="--d:2">
+        <div class="card"><p class="label">Cuff</p><h3>Noninvasive, but intermittent</h3><p class="small" style="margin-top:6px;">Readings minutes apart. Drops in between go unseen.</p></div>
+        <div class="card"><p class="label">Arterial line</p><h3>Continuous, but invasive</h3><p class="small" style="margin-top:6px;">The reference standard needs a catheter in an artery.</p></div>
+      </div>
+      <div class="card red block reveal" style="--d:3"><p class="label">Design goal</p><p style="margin:0; font-size:18px; font-weight:700; line-height:1.35;">Arterial-line-quality data from a noninvasive wearable.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEYOND -->
+<section class="s" id="beyond" data-name="Sleep" data-grp="product">
+  <div class="wrap grid g-text-media">
+    <div class="text">
       <p class="eyebrow reveal">Future indications</p>
       <h2 class="reveal" style="--d:1">From the OR <span class="red">to the bedroom.</span></h2>
-      <div class="media reveal" style="--d:2">
-        <div class="frame"><img src="media/sleep.webp" alt="Two charts of change in blood pressure over an hour of sleep: flat for a healthy subject, frequent large surges for a subject with obstructive sleep apnea" width="945" height="379" loading="lazy"></div>
-        <p class="cap">Change in blood pressure over one hour of sleep.</p>
-      </div>
-      <p class="small reveal" style="--d:3; margin-top:14px;">Apnea events cause short blood pressure surges that spot checks can’t resolve. The same sensor opens up sleep research, chronic disease and remote monitoring.</p>
-      <div class="statrow reveal" style="--d:4"><div class="stat" data-count="51">51</div><div class="stat-l">surges per hour above 30 mmHg in the OSA subject, vs. 0 in the healthy control</div></div>
+      <p class="lede reveal" style="--d:2">Apnea events cause short blood pressure surges that spot checks can’t resolve. The same sensor opens up sleep research, chronic disease and remote monitoring.</p>
+      <div class="card red block reveal" style="--d:3; max-width:360px;"><div class="stat" data-count="51">51</div><div class="stat-l">surges per hour above 30 mmHg in the OSA subject, vs. 0 in the healthy control</div></div>
+    </div>
+    <div class="media reveal" style="--d:2">
+      <div class="frame"><img src="media/sleep.webp" alt="Two charts of change in blood pressure over an hour of sleep: flat for a healthy subject, frequent large surges for a subject with obstructive sleep apnea" width="945" height="379" loading="lazy"></div>
+      <p class="cap">Change in blood pressure over one hour of sleep.</p>
     </div>
   </div>
 </section>
