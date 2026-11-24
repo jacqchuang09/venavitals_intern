@@ -253,15 +253,32 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 @media (max-width: 900px) { .tl { grid-template-columns: 1fr; } .tl::before { left: 7px; right: auto; width: 2px; top: 0; bottom: 0; height: auto; background: linear-gradient(180deg, var(--accent) 0 58%, var(--line) 58% 100%); } .tl li { padding: 0 0 22px 34px; } }
 
 
+
+/* wearable | workflow split */
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
+.split h2 { font-size: clamp(26px, 2.5vw, 38px); margin-bottom: 18px; }
+.split .media .tabs { margin-bottom: 10px; }
+.split #v-top img { max-height: 44svh; width: auto; max-width: 100%; margin: 0 auto; display: block; }
+.split #v-under .spot-wrap { padding: 18px !important; }
+.partcap { margin: 12px 0 0; padding: 10px 12px; background: var(--bg-2); border-left: 3px solid var(--accent); font-size: 14px; min-height: 3.2em; display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
+.partcap b { font-weight: 700; }
+.partcap span { color: var(--mute); }
+@media (max-width: 900px) { .split { grid-template-columns: minmax(0, 1fr); } .split #v-top img { max-height: none; } }
+.goal { margin: 12px 0 0; padding: 10px 12px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 600; line-height: 1.35; }
+.goal b { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .85; margin-bottom: 2px; }
+.statrow { display: flex; align-items: center; gap: 14px; margin-top: 14px; padding: 10px 14px; border-left: 3px solid var(--accent); background: var(--bg); }
+.statrow .stat { font-size: 40px; line-height: 1; margin: 0; }
+.statrow .stat-l { margin: 0; font-size: 13.5px; }
+.split .card h3 { font-size: 15px; }
+.split .cards.c2 .card { padding: 12px 14px; }
 /* wearable + workflow: compact 3-step row */
 .flow3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
 .flow3 > div { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: center; padding: 10px 12px; background: var(--bg-2); border-top: 2px solid var(--accent); }
 .flow3 .k { width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 700; }
 .flow3 b { font-size: 14px; }
 .flow3 small { grid-column: 1 / -1; font-size: 12.5px; color: var(--mute); line-height: 1.4; }
-@media (max-height: 800px) and (min-width: 900px) { #hwParts button { padding-block: 6px; } #hwParts small { font-size: 12.5px; } .flow3 { margin-top: 12px; } .flow3 > div { padding: 8px 10px; } }
+@media (max-height: 800px) and (min-width: 900px) { .flow3 { margin-top: 12px; } .flow3 > div { padding: 8px 10px; } .split h2 { margin-bottom: 12px; } }
 @media (max-width: 520px) { .flow3 { grid-template-columns: 1fr; } }
-@media (max-height: 760px) and (min-width: 900px) { #hwParts small { display: none; } }
 
 /* ---------- merged hero: OR video + translucent timeline ---------- */
 .hero-or .wrap { position: relative; z-index: 1; display: flex; flex-direction: column; gap: clamp(24px, 5vh, 56px); }
@@ -454,56 +471,50 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
       <li class="future"><span class="yr">Pending</span><p>Clearance decision.</p></li>
       <li class="future"><span class="yr">Next</span><p>Hospitals, then sleep and home care.</p></li>
     </ol>
-      <p class="glass-note">Investigational device. Not available for sale.</p>
     </div>
   </div>
 </section>
 
-<!-- NEED -->
+<!-- NEED + FUTURE INDICATIONS (side by side) -->
 <section class="s alt" id="need" data-core="40" data-name="Clinical need" data-grp="company">
-  <div class="wrap grid g-media-text">
-    <div class="media reveal">
-      <div class="frame"><img src="media/bp-chart.webp" alt="MATLAB-style chart of systolic pressure over 60 minutes: a continuous trace dips during a short hypotensive event that 5-minute cuff readings miss" width="1600" height="690" loading="lazy"></div>
-      <p class="cap">Illustrative: 5-minute cuff sampling misses a short hypotensive event.</p>
-    </div>
-    <div class="text">
+  <div class="wrap split">
+    <div class="half">
       <p class="eyebrow reveal">Clinical need</p>
-      <h2 class="reveal" style="--d:1">Blood pressure every beat. <span class="red">Not every five minutes.</span></h2>
-      <div class="cards c2 block reveal" style="--d:2">
-        <div class="card"><p class="label">Cuff</p><h3>Noninvasive, but intermittent</h3><p class="small" style="margin-top:6px;">Readings minutes apart. Drops in between go unseen.</p></div>
-        <div class="card"><p class="label">Arterial line</p><h3>Continuous, but invasive</h3><p class="small" style="margin-top:6px;">The reference standard needs a catheter in an artery.</p></div>
+      <h2 class="reveal" style="--d:1">Every beat. <span class="red">Not every five minutes.</span></h2>
+      <div class="media reveal" style="--d:2">
+        <div class="frame"><img src="media/bp-chart.webp" alt="MATLAB-style chart of systolic pressure over 60 minutes: a continuous trace dips during a short hypotensive event that 5-minute cuff readings miss" width="1600" height="690" loading="lazy"></div>
+        <p class="cap">5-minute cuff sampling misses a short hypotensive event.</p>
       </div>
-      <div class="card red block reveal" style="--d:3"><p class="label">Design goal</p><p style="margin:0; font-size:18px; font-weight:700; line-height:1.35;">Arterial-line-quality data from a noninvasive wearable.</p></div>
+      <div class="cards c2 reveal" style="--d:3; margin-top:14px;">
+        <div class="card"><p class="label">Cuff</p><h3>Noninvasive, but intermittent</h3><p class="small" style="margin-top:4px;">Drops between readings go unseen.</p></div>
+        <div class="card"><p class="label">Arterial line</p><h3>Continuous, but invasive</h3><p class="small" style="margin-top:4px;">Needs a catheter in an artery.</p></div>
+      </div>
+      <p class="goal reveal" style="--d:4"><b>Design goal</b>Arterial-line-quality data from a noninvasive wearable.</p>
+    </div>
+    <div class="half">
+      <p class="eyebrow reveal">Future indications</p>
+      <h2 class="reveal" style="--d:1">From the OR <span class="red">to the bedroom.</span></h2>
+      <div class="media reveal" style="--d:2">
+        <div class="frame"><img src="media/sleep.webp" alt="Two charts of change in blood pressure over an hour of sleep: flat for a healthy subject, frequent large surges for a subject with obstructive sleep apnea" width="945" height="379" loading="lazy"></div>
+        <p class="cap">Change in blood pressure over one hour of sleep.</p>
+      </div>
+      <p class="small reveal" style="--d:3; margin-top:14px;">Apnea events cause short blood pressure surges that spot checks can’t resolve. The same sensor opens up sleep research, chronic disease and remote monitoring.</p>
+      <div class="statrow reveal" style="--d:4"><div class="stat" data-count="51">51</div><div class="stat-l">surges per hour above 30 mmHg in the OSA subject, vs. 0 in the healthy control</div></div>
     </div>
   </div>
 </section>
 
-<!-- HARDWARE -->
+<!-- HARDWARE + WORKFLOW (side by side) -->
 <section class="s" id="hardware" data-core="40" data-name="The wearable" data-grp="product">
-  <div class="wrap grid g-text-media">
-    <div class="text">
-      <p class="eyebrow reveal">The wearable and workflow</p>
+  <div class="wrap split">
+    <div class="half">
+      <p class="eyebrow reveal">The wearable</p>
       <h2 class="reveal" style="--d:1">VeriTrack, <span class="red">piece by piece.</span></h2>
-      <p class="lede reveal" style="--d:2">For adult OR and ICU patients who would otherwise need an arterial line.</p>
-      <ol class="parts block reveal" style="--d:3" id="hwParts">
-        <li><button data-k="pod"><span class="n">01</span><b>Sensor pod</b><small>Electronics, Bluetooth to the iPad</small></button></li>
-        <li><button data-k="buckle"><span class="n">02</span><b>Ratchet buckles</b><small>Adjust the fit</small></button></li>
-        <li><button data-k="base"><span class="n">03</span><b>Soft base</b><small>Rests on the top of the foot</small></button></li>
-        <li><button data-k="strap"><span class="n">04</span><b>Wrap strap</b><small>Secures around the foot</small></button></li>
-        <li><button data-k="window"><span class="n">05</span><b>Sensor window</b><small>Underside, sits on the skin over the artery</small></button></li>
-      </ol>
-      <div class="flow3 reveal" style="--d:4" id="hwFlow">
-        <div><span class="k">1</span><b>Place</b><small>Over the artery on the top of the foot.</small></div>
-        <div><span class="k">2</span><b>Verify</b><small>Live waveform must confirm placement.</small></div>
-        <div><span class="k">3</span><b>Monitor</b><small>Systolic, diastolic and mean, every beat.</small></div>
-      </div>
-    </div>
-    <div class="media reveal" style="--d:2" id="hwMedia">
-      <div class="tabs" role="tablist" aria-label="Wearable views">
-        <button role="tab" aria-selected="true" data-view="v-top">Top</button>
-        <button role="tab" aria-selected="false" data-view="v-under">Underside</button>
-        <button role="tab" aria-selected="false" data-view="v-setup">Setup</button>
-      </div>
+      <div class="media reveal" style="--d:2" id="hwMedia">
+        <div class="tabs" role="tablist" aria-label="Wearable views">
+          <button role="tab" aria-selected="true" data-view="v-top">Top</button>
+          <button role="tab" aria-selected="false" data-view="v-under">Underside</button>
+        </div>
       <div class="view on" id="v-top">
         <div class="spot-wrap" data-spots="hw">
           <img src="media/top.webp" alt="Top view of the VeriTrack wearable: sensor pod, two ratchet buckles, soft base and a long wrap strap" width="1090" height="700">
@@ -520,25 +531,27 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
           <button class="spot" data-k="window" style="left:51.8%; top:35%" aria-label="Sensor window"></button>
         </div>
       </div>
-      <div class="view" id="v-setup">
+        <p class="partcap" id="hwPartsCap" aria-live="polite"><b>Hover a red dot</b><span>to see what each part does.</span></p>
+      </div>
+      <ol class="parts" id="hwParts" hidden>
+        <li><button data-k="pod"><span class="n">01</span><b>Sensor pod</b><small>Electronics, Bluetooth to the iPad</small></button></li>
+        <li><button data-k="buckle"><span class="n">02</span><b>Ratchet buckles</b><small>Adjust the fit</small></button></li>
+        <li><button data-k="base"><span class="n">03</span><b>Soft base</b><small>Rests on the top of the foot</small></button></li>
+        <li><button data-k="strap"><span class="n">04</span><b>Wrap strap</b><small>Secures around the foot</small></button></li>
+        <li><button data-k="window"><span class="n">05</span><b>Sensor window</b><small>Underside, sits on the skin over the artery</small></button></li>
+      </ol>
+    </div>
+    <div class="half">
+      <p class="eyebrow reveal">Clinical workflow</p>
+      <h2 class="reveal" style="--d:1">Place. Verify. <span class="red">Monitor.</span></h2>
+      <div class="media reveal" style="--d:2">
         <video class="lazyvid" src="media/setup.mp4" poster="media/setup.jpg" muted loop playsinline preload="metadata" aria-label="Setup demo: strapping the wearable onto a foot beside the app’s placement screen" width="1000" height="564" style="width:100%; height:auto; display:block;"></video>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- BEYOND -->
-<section class="s" id="beyond" data-name="Sleep" data-grp="product">
-  <div class="wrap grid g-text-media">
-    <div class="text">
-      <p class="eyebrow reveal">Future indications</p>
-      <h2 class="reveal" style="--d:1">From the OR <span class="red">to the bedroom.</span></h2>
-      <p class="lede reveal" style="--d:2">Apnea events cause short blood pressure surges that spot checks can’t resolve. The same sensor opens up sleep research, chronic disease and remote monitoring.</p>
-      <div class="card red block reveal" style="--d:3; max-width:360px;"><div class="stat" data-count="51">51</div><div class="stat-l">surges per hour above 30 mmHg in the OSA subject, vs. 0 in the healthy control</div></div>
-    </div>
-    <div class="media reveal" style="--d:2">
-      <div class="frame"><img src="media/sleep.webp" alt="Two charts of change in blood pressure over an hour of sleep: flat for a healthy subject, frequent large surges for a subject with obstructive sleep apnea" width="945" height="379" loading="lazy"></div>
-      <p class="cap">Change in blood pressure over one hour of sleep.</p>
+      <div class="flow3 reveal" style="--d:3" id="hwFlow">
+        <div><span class="k">1</span><b>Place</b><small>Over the artery on the top of the foot.</small></div>
+        <div><span class="k">2</span><b>Verify</b><small>Live waveform must confirm placement.</small></div>
+        <div><span class="k">3</span><b>Monitor</b><small>Systolic, diastolic and mean, every beat.</small></div>
+      </div>
     </div>
   </div>
 </section>
@@ -612,7 +625,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
           <div><b id="dOut">100%</b><span>gap <i>d</i> vs. at rest</span></div>
           <div><b id="cOut">1.00×</b><span>capacitance vs. at rest</span></div>
         </div>
-        <p class="cap">Illustrative. The gap change is exaggerated so it’s visible.</p>
+        <p class="cap">The gap change is exaggerated so it’s visible.</p>
       </div>
     </div>
   </div>
@@ -968,6 +981,8 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
         t.textContent = item ? item.querySelector('b').textContent : '';
         t.style.left = first.style.left; t.style.top = first.style.top; t.classList.add('show');
       }
+      var cap = document.getElementById(listId + 'Cap'), it = items.filter(function (i) { return i.dataset.k === k; })[0];
+      if (cap && it) cap.innerHTML = '<b>' + it.querySelector('b').textContent + '</b><span>' + it.querySelector('small').textContent + '</span>';
     }
     items.forEach(function (i) {
       i.addEventListener('mouseenter', function () { show(i.dataset.k, true); });
@@ -1148,7 +1163,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 </script>
 <script>
 window.__DEMO = { tabs: [
-  { k: 'hw', label: 'The wearable', sub: 'Parts, top and underside', core: true, main: ['#hwMedia'], aside: ['#hwParts'], cap: 'Hover a part to find it. Switch views above.' },
+  { k: 'hw', label: 'The wearable', sub: 'Parts, top and underside', core: true, main: ['#hwMedia'], cap: 'Hover a red dot to see each part. Switch views above.' },
   { k: 'sci', label: 'How it senses', sub: 'Sensor on the artery', main: ['#sciMedia'], aside: ['#sciParts'], cap: 'Hover a layer to find it.' },
   { k: 'cap', label: 'Capacitor', sub: 'Drag the pressure', main: ['#pulseBox'], cap: 'C = ε₀εᵣA / d. Drag the slider or play a pulse.' },
   { k: 'fix', label: 'Test fixture app', sub: 'Rig and GUI screens', main: ['#fixMedia'], cap: 'Fixture, setup, EM, fatigue and analysis screens.' },
