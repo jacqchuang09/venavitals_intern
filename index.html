@@ -277,6 +277,25 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 .statrow .stat-l { margin: 0; font-size: 13.5px; }
 .split .card h3 { font-size: 15px; }
 .split .cards.c2 .card { padding: 12px 14px; }
+
+/* interactive fixture */
+.rig { background: var(--bg); border: 1px solid var(--line); padding: 10px 12px 8px; }
+.rig svg { width: 100%; height: auto; display: block; }
+.rig svg text { font-family: inherit; }
+.rig-ctl { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px 16px; align-items: end; margin-top: 6px; }
+.rig-rng { display: grid; gap: 2px; font-size: 12px; font-weight: 600; color: var(--ink); }
+.rig-rng output { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.rig-rng input { width: 100%; accent-color: var(--accent); }
+.rig-btns { display: flex; gap: 6px; }
+.rig-btns button { font: inherit; font-size: 12.5px; font-weight: 600; padding: 7px 10px; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink); cursor: pointer; white-space: nowrap; }
+.rig-btns button:hover { border-color: var(--accent); }
+.rig-btns #rigRun { background: var(--accent); color: #fff; border-color: var(--accent); }
+.rig-btns button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.rig-log { margin: 8px 0 0; font-size: 12.5px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--ink); min-height: 1.5em; }
+.rig-log b { color: var(--accent); margin-right: 6px; }
+.rig-log.ok b { color: #2f8a4c; }
+@media (max-width: 1100px) { .rig-ctl { grid-template-columns: 1fr 1fr; } .rig-btns { grid-column: 1 / -1; } }
+@media (max-width: 520px) { .rig-ctl { grid-template-columns: 1fr; } .rig-btns { flex-wrap: wrap; } }
 /* wearable + workflow: compact 3-step row */
 .flow3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
 .flow3 > div { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: center; padding: 10px 12px; background: var(--bg-2); border-top: 2px solid var(--accent); }
@@ -718,7 +737,18 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
         <button role="tab" aria-selected="false" data-view="f-fat">Fatigue test</button>
         <button role="tab" aria-selected="false" data-view="f-ana">Analysis</button>
       </div>
-      <div class="view on" id="f-rig"><div class="frame shot"><img src="media/fixture.webp" alt="Sketch of the test fixture: an actuator presses on the sensor while a load cell measures force" width="990" height="550" loading="lazy"></div><p class="cap">The fixture: an actuator loads the sensor while a load cell measures force.</p></div>
+      <div class="view on" id="f-rig">
+        <div class="rig" id="rig">
+          <svg id="rigSvg" viewBox="0 0 640 320" role="img" aria-label="Interactive test fixture: an actuator lowers a probe onto the sensor, which sits on a load cell. Readouts show position, force and the sensor's capacitance change, with a live plot."></svg>
+          <div class="rig-ctl">
+            <label class="rig-rng">Actuator position <output id="rigPosO">0.0 mm</output><input type="range" id="rigPos" min="0" max="12" step="0.1" value="0"></label>
+            <label class="rig-rng">Force limit <output id="rigLimO">5.0 N</output><input type="range" id="rigLim" min="1" max="8" step="0.5" value="5"></label>
+            <div class="rig-btns"><button type="button" id="rigRun">Run EM test</button><button type="button" id="rigUnplug">Unplug load cell</button><button type="button" id="rigReset">Home</button></div>
+          </div>
+          <p class="rig-log" id="rigLog" aria-live="polite"><b>READY</b> Drag the position slider or run a test.</p>
+        </div>
+        <p class="cap">Illustrative values. The probe presses the sensor; the load cell underneath measures the force it feels.</p>
+      </div>
       <div class="view" id="f-cfg"><div class="frame shot"><img src="media/gui-config.webp" alt="Test configuration window: test type, surface area, number of runs, motor stage port, and buttons to begin the test or open calibration" width="1600" height="825" loading="lazy"></div><p class="cap">Pick the test type (EM, shear, manual, fatigue), set the runs and connect the motor stage, or open calibration.</p></div>
       <div class="view" id="f-em"><div class="frame shot"><img src="media/gui-em.webp" alt="EM testing window with a time-stamped status log, a live force-versus-time plot, and start, pause and analyze controls" width="1600" height="825" loading="lazy"></div><p class="cap">EM test: time-stamped status log, live force plot, and start / pause / analyze.</p></div>
       <div class="view" id="f-fat"><div class="frame shot"><img src="media/gui-fatigue.webp" alt="Fatigue testing window: waveform, force bounds, frequency and cycle count, with a live preview of the sine cycle and a duration estimate" width="1600" height="927" loading="lazy"></div><p class="cap">Fatigue test: define the cycle, preview it live, and see how long the run will take.</p></div>
@@ -1154,6 +1184,115 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
     }, { threshold: 0.5 });
     io.observe(el);
   });
+})();
+</script>
+<script>
+// ---------- interactive test fixture (illustrative numbers) ----------
+(function () {
+  var svg = document.getElementById('rigSvg'); if (!svg) return;
+  var NS = 'http://www.w3.org/2000/svg', reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function el(t, a, p) { var e = document.createElementNS(NS, t); for (var k in a) e.setAttribute(k, a[k]); (p || svg).appendChild(e); return e; }
+  var ACC = '#d84a4a', INK = '#2b2b2b', MUTE = '#8a8585', BLUE = '#3b7dd8', LINE = '#e3e0e0';
+  // geometry: probe tip y = TIP0 + z*S ; first contact at Z_C
+  var S = 6, Z_C = 9, ZMAX = 12, TOP = 236, TIP0 = TOP - Z_C * S;
+  // ---- static rig ----
+  el('rect', { x: 18, y: 292, width: 286, height: 14, rx: 2, fill: '#cfcaca' });
+  el('rect', { x: 58, y: 34, width: 16, height: 258, fill: '#d9d5d5' });
+  el('rect', { x: 58, y: 34, width: 150, height: 16, fill: '#d9d5d5' });
+  for (var i = 0; i < 6; i++) el('circle', { cx: 66, cy: 70 + i * 36, r: 2.2, fill: '#b9b3b3' });
+  el('rect', { x: 128, y: 50, width: 64, height: 92, rx: 4, fill: INK });
+  el('circle', { cx: 144, cy: 66, r: 3.2, fill: '#3fbf6a' }); el('circle', { cx: 156, cy: 66, r: 3.2, fill: '#4aa3f0' });
+  el('text', { x: 160, y: 122, 'text-anchor': 'middle', 'font-size': 10, fill: '#fff', 'font-weight': 600 }).textContent = 'ACTUATOR';
+  var cable = el('path', { d: 'M192 128 C 236 128, 262 150, 312 150', fill: 'none', stroke: INK, 'stroke-width': 2.4 });
+  var rod = el('rect', { x: 153, y: 142, width: 14, height: 10, fill: '#9a9595' });
+  var head = el('rect', { x: 144, y: 0, width: 32, height: 12, rx: 2, fill: '#6d6868' });
+  var sensor = el('rect', { x: 108, y: TOP, width: 104, height: 14, rx: 2, fill: '#7fb98c' });
+  var chans = []; for (i = 0; i < 8; i++) chans.push(el('rect', { x: 113 + i * 12.25, y: TOP + 3, width: 8, height: 4, rx: 1, fill: '#4f8f5e' }));
+  var cell = el('rect', { x: 118, y: 250, width: 84, height: 42, rx: 3, fill: '#bdb7b7' });
+  el('text', { x: 160, y: 276, 'text-anchor': 'middle', 'font-size': 10, fill: INK, 'font-weight': 700 }).textContent = 'LOAD CELL';
+  var cableLC = el('path', { d: 'M202 286 C 240 286, 262 300, 300 300', fill: 'none', stroke: INK, 'stroke-width': 2.4 });
+  var plug = el('circle', { cx: 300, cy: 300, r: 4, fill: INK });
+  // labels
+  function lab(x, y, tx, ty, t, sub) { el('line', { x1: x, y1: y, x2: tx - 4, y2: ty - 4, stroke: MUTE, 'stroke-width': 1 }); var g = el('text', { x: tx, y: ty, 'font-size': 11, fill: INK, 'font-weight': 700 }); g.textContent = t; if (sub) { var s = el('text', { x: tx, y: ty + 12, 'font-size': 9.5, fill: MUTE }); s.textContent = sub; } }
+  lab(192, 70, 214, 62, 'Linear actuator', 'moves the probe');
+  lab(212, 241, 226, 222, 'Sensor', '8 channels');
+  lab(202, 266, 226, 262, 'Load cell', 'measures force');
+  // ---- readouts + plot ----
+  var PX = 330, PW = 300;
+  function box(x, w, t) { el('rect', { x: x, y: 14, width: w, height: 58, fill: '#f6f6f6' }); el('text', { x: x + 10, y: 32, 'font-size': 10, fill: MUTE, 'font-weight': 700, 'letter-spacing': '.08em' }).textContent = t; return el('text', { x: x + 10, y: 59, 'font-size': 18, fill: INK, 'font-weight': 800 }); }
+  var rPos = box(PX, 94, 'POSITION'), rF = box(PX + 103, 94, 'FORCE'), rC = box(PX + 206, 94, 'SENSOR ΔC');
+  var GX = PX + 26, GY = 96, GW = PW - 30, GH = 176;
+  el('rect', { x: PX, y: 86, width: PW, height: 220, fill: 'none', stroke: LINE });
+  for (i = 0; i <= 4; i++) el('line', { x1: GX, x2: GX + GW, y1: GY + GH * i / 4, y2: GY + GH * i / 4, stroke: '#f0eeee' });
+  for (i = 0; i <= 4; i++) el('text', { x: GX - 6, y: GY + GH - GH * i / 4 + 3, 'text-anchor': 'end', 'font-size': 9, fill: MUTE }).textContent = (i * 2);
+  el('text', { x: GX, y: GY + GH + 16, 'font-size': 9.5, fill: MUTE }).textContent = 'last 8 s';
+  el('text', { x: GX + GW, y: GY + GH + 16, 'text-anchor': 'end', 'font-size': 9.5, fill: ACC, 'font-weight': 700 }).textContent = '— force (N)';
+  el('text', { x: GX + GW - 86, y: GY + GH + 16, 'text-anchor': 'end', 'font-size': 9.5, fill: BLUE, 'font-weight': 700 }).textContent = '— sensor ΔC';
+  var limLine = el('line', { x1: GX, x2: GX + GW, stroke: ACC, 'stroke-dasharray': '4 3', opacity: .55 });
+  var limTx = el('text', { x: GX + 4, 'font-size': 9, fill: ACC }); 
+  var pF = el('polyline', { fill: 'none', stroke: ACC, 'stroke-width': 2 });
+  var pC = el('polyline', { fill: 'none', stroke: BLUE, 'stroke-width': 1.6 });
+  var flash = el('rect', { x: 0, y: 0, width: 640, height: 320, fill: ACC, opacity: 0, 'pointer-events': 'none' });
+  // ---- model ----
+  function force(z) { var d = Math.max(0, z - Z_C); return 0.6 * d + 0.5 * d * d; }          // N
+  function zFor(F) { return Z_C + (-0.6 + Math.sqrt(0.36 + 2 * F)) / 1.0; }                 // inverse
+  function dC(F) { var P = F * 10, g = 0.5 * P / (P + 40); return 100 * g / (1 - g); }       // % (1 cm² pad)
+  var posIn = document.getElementById('rigPos'), posO = document.getElementById('rigPosO');
+  var limIn = document.getElementById('rigLim'), limO = document.getElementById('rigLimO');
+  var runB = document.getElementById('rigRun'), unB = document.getElementById('rigUnplug'), homeB = document.getElementById('rigReset'), log = document.getElementById('rigLog');
+  var z = 0, target = 0, limit = 5, mode = 'manual', connected = true, t = 0, hist = [], steps = [], stepT = 0, results = [], faultT = 0;
+  function say(tag, msg, ok) { log.innerHTML = '<b>' + tag + '</b>' + msg; log.classList.toggle('ok', !!ok); }
+  function setTarget(v) { target = Math.max(0, Math.min(ZMAX, v)); posIn.value = target.toFixed(1); posO.textContent = target.toFixed(1) + ' mm'; }
+  posIn.addEventListener('input', function () { if (mode === 'run') { mode = 'manual'; say('PAUSED', 'Manual control took over.'); } if (!connected) return; setTarget(+posIn.value); if (+posIn.value >= ZMAX) say('LIMIT', 'Travel limit: the stage will not go further.'); });
+  limIn.addEventListener('input', function () { limit = +limIn.value; limO.textContent = limit.toFixed(1) + ' N'; });
+  runB.addEventListener('click', function () {
+    if (!connected) { say('BLOCKED', 'Load cell disconnected. Reconnect before running.'); return; }
+    mode = 'run'; results = []; steps = [0.5, 1, 2, 3, 4, 5, 6].map(function (F) { return { F: F }; }); stepT = 0;
+    setTarget(Z_C - 1); say('RUN 1', 'Approaching the sensor…');
+  });
+  unB.addEventListener('click', function () {
+    connected = !connected; unB.setAttribute('aria-pressed', !connected); unB.textContent = connected ? 'Unplug load cell' : 'Plug back in';
+    if (!connected) { mode = 'fault'; setTarget(z); say('DISCONNECT', 'Lost the load cell. Motion stopped, waiting for it to come back.'); plug.setAttribute('cx', 316); plug.setAttribute('cy', 288); cableLC.setAttribute('d', 'M202 286 C 240 286, 270 290, 306 290'); }
+    else { plug.setAttribute('cx', 300); plug.setAttribute('cy', 300); cableLC.setAttribute('d', 'M202 286 C 240 286, 262 300, 300 300'); mode = 'manual'; setTarget(Math.max(0, z - 2)); say('RECOVERED', 'Load cell back. Backed off 2 mm and re-zeroed.', true); }
+  });
+  homeB.addEventListener('click', function () { if (!connected) return; mode = 'manual'; setTarget(0); say('HOME', 'Returning to the top of travel.', true); });
+  // ---- loop ----
+  var last = performance.now(), visible = false;
+  function frame(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
+    if (mode === 'run' && connected) {
+      if (z >= Z_C - 1.05 && steps.length) {
+        var s = steps[0]; if (!s.started) { s.started = true; setTarget(zFor(s.F)); stepT = 0; }
+        if (Math.abs(z - target) < 0.02) { stepT += dt; if (stepT > 0.7) { results.push(s.F); say('RUN 1', 'Load ' + results.length + ' of 7 · ' + s.F.toFixed(1) + ' N · ΔC ' + dC(force(z)).toFixed(1) + '%'); steps.shift(); } }
+      } else if (!steps.length) { mode = 'manual'; setTarget(0); say('DONE', 'Run complete: ' + results.length + ' loads saved for the sensitivity curve.', true); }
+    }
+    var speed = mode === 'run' ? 3 : 6, dz = target - z;                  // mm/s
+    if (connected) z += Math.sign(dz) * Math.min(Math.abs(dz), speed * dt);
+    var F = force(z);
+    if (connected && F > limit && mode !== 'fault') {                      // force interlock
+      mode = 'manual'; steps = []; setTarget(z - 1.5); faultT = 0.6;
+      say('FORCE LIMIT', F.toFixed(1) + ' N > ' + limit.toFixed(1) + ' N. Stopped and backed off 1.5 mm.');
+    }
+    if (faultT > 0) { faultT -= dt; flash.setAttribute('opacity', Math.max(0, faultT) * 0.18); }
+    // draw rig
+    var comp = Math.min(8, Math.max(0, z - Z_C) * 3), sTop = TOP + comp, tip = Math.min(TIP0 + z * S, sTop);
+    head.setAttribute('y', tip - 12); rod.setAttribute('height', Math.max(2, tip - 12 - 142));
+    sensor.setAttribute('y', sTop); sensor.setAttribute('height', 14 - comp);
+    chans.forEach(function (c, k) { var w = Math.exp(-Math.pow((k - 3.5) / 1.6, 2)), f = Math.min(1, F / 6) * w; c.setAttribute('y', sTop + 3); c.setAttribute('fill', f > 0.02 ? 'rgb(' + Math.round(79 + 137 * f) + ',' + Math.round(143 - 69 * f) + ',' + Math.round(94 - 20 * f) + ')' : '#4f8f5e'); });
+    cell.setAttribute('fill', connected && F > 0 ? 'rgb(' + Math.round(189 + 30 * Math.min(1, F / 6)) + ',183,183)' : '#bdb7b7');
+    rPos.textContent = z.toFixed(2) + ' mm';
+    rF.textContent = connected ? F.toFixed(2) + ' N' : '— N'; rF.setAttribute('fill', connected ? (F > limit * 0.85 ? ACC : INK) : MUTE);
+    rC.textContent = dC(F).toFixed(1) + '%';
+    // plot
+    hist.push({ t: t, F: connected ? F : null, C: dC(F) }); while (hist.length && t - hist[0].t > 8) hist.shift();
+    var a = '', b = '';
+    hist.forEach(function (p) { var x = GX + GW - (t - p.t) / 8 * GW; if (p.F != null) a += x.toFixed(1) + ',' + (GY + GH - Math.min(8, p.F) / 8 * GH).toFixed(1) + ' '; b += x.toFixed(1) + ',' + (GY + GH - Math.min(60, p.C) / 60 * GH).toFixed(1) + ' '; });
+    pF.setAttribute('points', a); pC.setAttribute('points', b);
+    var ly = GY + GH - limit / 8 * GH; limLine.setAttribute('y1', ly); limLine.setAttribute('y2', ly); limTx.setAttribute('y', ly - 4); limTx.textContent = 'limit ' + limit.toFixed(1) + ' N';
+    if (visible) requestAnimationFrame(frame);
+  }
+  new IntersectionObserver(function (es) { var v = es[0].isIntersecting; if (v && !visible) { visible = true; last = performance.now(); requestAnimationFrame(frame); } visible = v; }).observe(svg);
+  frame(performance.now());
 })();
 </script>
 <script>
