@@ -440,7 +440,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
     <ul class="nav-links">
       <li><a href="#need" data-grp="company">Clinical need</a></li>
       <li><a href="#hardware" data-grp="product">VeriTrack</a></li>
-      <li><a href="#science" data-grp="science">Technology</a></li>
+      <li><a href="#capacitor" data-grp="science">Technology</a></li>
       <li><a href="#work" data-grp="work">My work</a></li>
       <li class="nav-demo-li"><a href="#demo" data-grp="demo" class="nav-demo">Live demo</a></li>
     </ul>
@@ -510,8 +510,8 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
   </div>
 </section>
 
-<!-- HARDWARE + WORKFLOW (side by side) -->
-<section class="s" id="hardware" data-core="40" data-name="The wearable" data-grp="product">
+<!-- HARDWARE + SCIENCE (side by side) -->
+<section class="s" id="hardware" data-core="60" data-name="Wearable and science" data-grp="product">
   <div class="wrap split">
     <div class="half">
       <p class="eyebrow reveal">The wearable</p>
@@ -548,25 +548,10 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
       </ol>
     </div>
     <div class="half">
-      <p class="eyebrow reveal">Clinical workflow</p>
-      <h2 class="reveal" style="--d:1">Place. Verify. <span class="red">Monitor.</span></h2>
-      <div class="media reveal" style="--d:2">
-        <video class="lazyvid" src="media/setup.mp4" poster="media/setup.jpg" muted loop playsinline preload="metadata" aria-label="Setup demo: strapping the wearable onto a foot beside the app’s placement screen" width="1000" height="564" style="width:100%; height:auto; display:block;"></video>
-      </div>
-      <div class="flow3 reveal" style="--d:3" id="hwFlow">
-        <div><span class="k">1</span><b>Place</b><small>Over the artery on the top of the foot.</small></div>
-        <div><span class="k">2</span><b>Verify</b><small>Live waveform must confirm placement.</small></div>
-        <div><span class="k">3</span><b>Monitor</b><small>Systolic, diastolic and mean, every beat.</small></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SCIENCE -->
-<section class="s" id="science" data-core="35" data-name="How it senses" data-grp="science">
-  <div class="wrap grid g-media-text">
-    <div class="media reveal" id="sciMedia">
-      <div class="spot-wrap" data-spots="sci">
+      <p class="eyebrow reveal">The science</p>
+      <h2 class="reveal" style="--d:1">Applanation tonometry, <span class="red">made soft.</span></h2>
+      <div class="media reveal" style="--d:2" id="sciMedia">
+        <div class="spot-wrap" data-spots="sci">
         <video class="lazyvid" src="media/sense.mp4" poster="media/sense.jpg" muted loop playsinline preload="metadata" aria-label="Animation: the layered sensor on skin above an artery; each beat the artery swells and presses up into the sensor" width="1140" height="804"></video>
         <button class="spot" data-k="elast" style="left:67.6%; top:10.1%" aria-label="Silicone elastomer"></button>
         <button class="spot" data-k="gold" style="left:27.2%; top:20.5%" aria-label="Wrinkled gold electrodes"></button>
@@ -574,18 +559,16 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
         <button class="spot" data-k="skin" style="left:12.2%; top:41%" aria-label="Skin"></button>
         <button class="spot" data-k="artery" style="left:91.2%; top:49.8%" aria-label="Artery"></button>
       </div>
-    </div>
-    <div class="text">
-      <p class="eyebrow reveal">The science</p>
-      <h2 class="reveal" style="--d:1">Applanation tonometry, <span class="red">made soft.</span></h2>
-      <p class="lede reveal" style="--d:2">The sensor reads the artery’s pulse right through the skin. Each beat pushes up into a soft capacitor.</p>
-      <ol class="parts block reveal" style="--d:3" id="sciParts">
+        <p class="partcap" id="sciPartsCap" aria-live="polite"><b>Hover a red dot</b><span>to see each layer.</span></p>
+      </div>
+      <ol class="parts" id="sciParts" hidden>
         <li><button data-k="elast"><span class="n">01</span><b>Silicone elastomer</b><small>Soft layer that flexes with the skin</small></button></li>
         <li><button data-k="gold"><span class="n">02</span><b>Wrinkled gold electrodes</b><small>The two capacitor plates</small></button></li>
         <li><button data-k="gap"><span class="n">03</span><b>Air gap + micropillars</b><small>Compress with each beat</small></button></li>
         <li><button data-k="skin"><span class="n">04</span><b>Skin</b><small>Carries the pulse up to the sensor</small></button></li>
         <li><button data-k="artery"><span class="n">05</span><b>Artery</b><small>Swells with each pulse</small></button></li>
       </ol>
+      <p class="small reveal" style="--d:3; margin-top:10px;">The sensor reads the artery’s pulse right through the skin. Each beat pushes up into a soft capacitor.</p>
     </div>
   </div>
 </section>
@@ -1170,7 +1153,7 @@ h3 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01
 <script>
 window.__DEMO = { tabs: [
   { k: 'hw', label: 'The wearable', sub: 'Parts, top and underside', core: true, main: ['#hwMedia'], cap: 'Hover a red dot to see each part. Switch views above.' },
-  { k: 'sci', label: 'How it senses', sub: 'Sensor on the artery', main: ['#sciMedia'], aside: ['#sciParts'], cap: 'Hover a layer to find it.' },
+  { k: 'sci', label: 'How it senses', sub: 'Sensor on the artery', main: ['#sciMedia'], cap: 'Hover a red dot to see each layer.' },
   { k: 'cap', label: 'Capacitor', sub: 'Drag the pressure', main: ['#pulseBox'], cap: 'C = ε₀εᵣA / d. Drag the slider or play a pulse.' },
   { k: 'fix', label: 'Test fixture app', sub: 'Rig and GUI screens', main: ['#fixMedia'], cap: 'Fixture, setup, EM, fatigue and analysis screens.' },
   { k: 'clin', label: 'Clinical analysis', sub: 'Sensor vs. arterial line', main: ['#clinMedia'], aside: ['#clinPipe'], cap: 'Click a stage to see what it does.' }
